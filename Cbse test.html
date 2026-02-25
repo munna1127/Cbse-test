@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CBSE Chemistry Mock - Pro</title>
+<title>CBSE Chemistry Mock - Advanced</title>
 
 <style>
 body{
@@ -27,25 +27,6 @@ color:#00ffcc;
 font-weight:bold;
 margin-bottom:10px;
 }
-
-.palette{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-gap:5px;
-margin-bottom:15px;
-}
-
-.palette button{
-padding:8px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-background:gray;
-color:white;
-}
-
-.palette button.active{ background:#0072ff; }
-.palette button.attempted{ background:green; }
 
 .option{
 display:block;
@@ -78,6 +59,22 @@ color:white;
 cursor:pointer;
 }
 
+textarea{
+width:100%;
+height:80px;
+margin-top:10px;
+border-radius:8px;
+padding:5px;
+}
+
+.answer-box{
+margin-top:8px;
+padding:8px;
+background:rgba(0,255,0,0.15);
+border-radius:6px;
+display:none;
+}
+
 .result{
 text-align:center;
 font-size:18px;
@@ -92,17 +89,18 @@ margin-top:10px;
 <div class="container">
 
 <h2>CBSE Class 12 Chemistry Mock Test</h2>
-<div id="timer">Time Left: 30:00</div>
-<div>Attempted: <span id="attemptedCount">0</span> / 20</div>
-
-<div class="palette" id="palette"></div>
+<div id="timer">Time Left: 45:00</div>
 
 <h3 id="question"></h3>
 <div id="options"></div>
+<textarea id="writtenAnswer" style="display:none;"></textarea>
+
+<div class="answer-box" id="modelAnswer"></div>
 
 <div class="nav">
 <button onclick="prev()">Previous</button>
 <button onclick="next()">Next</button>
+<button onclick="showAnswer()">View Answer</button>
 <button onclick="submitTest()">Submit</button>
 </div>
 
@@ -112,8 +110,9 @@ margin-top:10px;
 
 <script>
 
-// QUESTIONS INCLUDED
-let questions=[
+// ===== DATA =====
+
+let mcqQuestions = [
 {q:"IUPAC name of CH3COOH?",options:["Methanoic acid","Ethanoic acid","Propanoic acid","Butanoic acid"],answer:1},
 {q:"Maximum oxidation state of Mn?",options:["+2","+4","+7","+3"],answer:2},
 {q:"Unit of molar conductivity?",options:["Ohm","S cm² mol⁻¹","Volt","Ampere"],answer:1},
@@ -136,84 +135,81 @@ let questions=[
 {q:"Aromatic compound?",options:["Benzene","Cyclohexane","Propane","Ethene"],answer:0}
 ];
 
-// SHUFFLE
-questions.sort(()=>Math.random()-0.5);
+let twoMarksQuestions = [
+{q:"Define rate of reaction.",answer:"Rate of reaction is change in concentration of reactant or product per unit time."},
+{q:"What are haloalkanes?",answer:"Haloalkanes are organic compounds in which hydrogen atom of alkane is replaced by halogen. Example: CH3Cl."},
+{q:"State Nernst equation.",answer:"E = E° − (0.0591/n) log Q"},
+{q:"Define electrochemical series.",answer:"It is arrangement of electrodes in order of increasing standard reduction potential."},
+{q:"What is hybridisation?",answer:"Hybridisation is mixing of atomic orbitals to form new hybrid orbitals of equal energy."},
+{q:"Define colligative properties.",answer:"Properties that depend only on number of solute particles not on their nature."},
+{q:"What is SN1 reaction?",answer:"SN1 is unimolecular nucleophilic substitution reaction occurring in two steps."},
+{q:"What is hydrogen bonding?",answer:"Attractive force between hydrogen attached to electronegative atom and another electronegative atom."},
+{q:"Define oxidation number.",answer:"Oxidation number is hypothetical charge assigned to atom in a molecule."},
+{q:"What is adsorption?",answer:"Accumulation of molecules on surface of a solid or liquid."}
+];
+
+let allQuestions = [...mcqQuestions, ...twoMarksQuestions];
 
 let current=0;
-let userAnswers=new Array(questions.length).fill(null);
+let userAnswers=new Array(allQuestions.length).fill(null);
 let submitted=false;
 
-function loadPalette(){
-let html="";
-questions.forEach((_,i)=>{
-let className="";
-if(i==current) className+=" active";
-if(userAnswers[i]!=null) className+=" attempted";
-html+=`<button class="${className}" onclick="goTo(${i})">${i+1}</button>`;
-});
-document.getElementById("palette").innerHTML=html;
-}
+// ===== LOAD QUESTION =====
 
 function loadQuestion(){
-let q=questions[current];
+let q=allQuestions[current];
 document.getElementById("question").innerText=(current+1)+". "+q.q;
+document.getElementById("modelAnswer").style.display="none";
 
-let optionsHTML="";
+if(current < mcqQuestions.length){
+document.getElementById("writtenAnswer").style.display="none";
+let html="";
 q.options.forEach((opt,i)=>{
 let className="option";
 if(userAnswers[current]==i) className+=" selected";
-if(submitted){
-if(i==q.answer) className+=" correct";
-if(userAnswers[current]==i && i!=q.answer) className+=" wrong";
-}
-optionsHTML+=`<button class="${className}" onclick="select(${i})">${opt}</button>`;
+html+=`<button class="${className}" onclick="select(${i})">${opt}</button>`;
 });
-document.getElementById("options").innerHTML=optionsHTML;
-loadPalette();
-updateAttempted();
+document.getElementById("options").innerHTML=html;
+}else{
+document.getElementById("options").innerHTML="";
+document.getElementById("writtenAnswer").style.display="block";
+document.getElementById("writtenAnswer").value=userAnswers[current]||"";
+}
 }
 
 function select(i){
-if(submitted) return;
 userAnswers[current]=i;
 loadQuestion();
 }
 
-function next(){ if(current<questions.length-1){current++;loadQuestion();} }
+function next(){ if(current<allQuestions.length-1){current++;loadQuestion();} }
 function prev(){ if(current>0){current--;loadQuestion();} }
-function goTo(i){ current=i; loadQuestion(); }
 
-function updateAttempted(){
-document.getElementById("attemptedCount").innerText=
-userAnswers.filter(a=>a!=null).length;
+function showAnswer(){
+let box=document.getElementById("modelAnswer");
+box.innerText=allQuestions[current].answer;
+box.style.display="block";
 }
 
 function submitTest(){
-submitted=true;
 let score=0;
-for(let i=0;i<questions.length;i++){
-if(userAnswers[i]==questions[i].answer) score+=1;
+for(let i=0;i<mcqQuestions.length;i++){
+if(userAnswers[i]==mcqQuestions[i].answer) score++;
 else if(userAnswers[i]!=null) score-=0.25;
 }
-let percent=((score/20)*100).toFixed(2);
 document.getElementById("result").innerHTML=
-"Final Score: "+score.toFixed(2)+"/20<br>Percentage: "+percent+"%";
-loadQuestion();
+"MCQ Score: "+score.toFixed(2)+"/20<br>2 Marks questions are subjective.";
 }
 
 // TIMER
-let time=30*60;
+let time=45*60;
 let timer=document.getElementById("timer");
-let countdown=setInterval(()=>{
+setInterval(()=>{
 let m=Math.floor(time/60);
 let s=time%60;
 timer.innerHTML="Time Left: "+m+":"+(s<10?"0"+s:s);
 time--;
-if(time<0){
-clearInterval(countdown);
-alert("Time Over!");
-submitTest();
-}
+if(time<0){ alert("Time Over"); submitTest(); }
 },1000);
 
 loadQuestion();
