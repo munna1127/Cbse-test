@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CBSE Chemistry Mock Test</title>
+<title>CBSE Chemistry Mock</title>
 
 <style>
 body{
     margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    font-family:Segoe UI;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     color:white;
 }
 
@@ -17,50 +17,52 @@ body{
     margin:20px auto;
     padding:20px;
     background:rgba(255,255,255,0.08);
-    backdrop-filter: blur(15px);
+    backdrop-filter:blur(15px);
     border-radius:15px;
 }
 
-h1{text-align:center;}
-
-.question-box{
-    margin-top:20px;
-}
-
-.options button{
+.option{
+    display:block;
     width:100%;
-    margin:8px 0;
     padding:10px;
-    border:none;
+    margin:8px 0;
     border-radius:8px;
+    border:none;
     cursor:pointer;
     background:rgba(255,255,255,0.1);
     color:white;
 }
 
-.options button:hover{
-    background:#00c6ff;
+.option.selected{
+    background:#0072ff;
 }
 
-.nav-buttons{
-    margin-top:15px;
+.option.correct{
+    background:green !important;
+}
+
+.option.wrong{
+    background:red !important;
+}
+
+.nav{
     text-align:center;
+    margin-top:15px;
 }
 
-.nav-buttons button{
+.nav button{
     padding:8px 15px;
     margin:5px;
     border:none;
     border-radius:6px;
     background:#0072ff;
     color:white;
-    cursor:pointer;
 }
 
 #timer{
     text-align:center;
-    font-weight:bold;
     color:#00ffcc;
+    font-weight:bold;
 }
 
 .result{
@@ -75,18 +77,16 @@ h1{text-align:center;}
 
 <div class="container">
 
-<h1>CBSE Class 12 Chemistry Mock</h1>
-<div id="timer">Time Left: 60:00</div>
+<h2>CBSE Class 12 Chemistry Mock Test</h2>
+<div id="timer">Time Left: 30:00</div>
 
-<div class="question-box">
-    <h3 id="question"></h3>
-    <div class="options" id="options"></div>
-</div>
+<h3 id="question"></h3>
+<div id="options"></div>
 
-<div class="nav-buttons">
-    <button onclick="prevQuestion()">Previous</button>
-    <button onclick="nextQuestion()">Next</button>
-    <button onclick="submitTest()">Submit</button>
+<div class="nav">
+<button onclick="prev()">Previous</button>
+<button onclick="next()">Next</button>
+<button onclick="submitTest()">Submit</button>
 </div>
 
 <div class="result" id="result"></div>
@@ -95,99 +95,103 @@ h1{text-align:center;}
 
 <script>
 
-let questions = [
+let questions=[
 {
-    q:"IUPAC name of CH3COOH?",
-    options:["Methanoic acid","Ethanoic acid","Propanoic acid","Butanoic acid"],
-    answer:1
+q:"IUPAC name of CH3COOH?",
+options:["Methanoic acid","Ethanoic acid","Propanoic acid","Butanoic acid"],
+answer:1
 },
 {
-    q:"Maximum oxidation state shown by Mn?",
-    options:["+2","+4","+7","+3"],
-    answer:2
+q:"Maximum oxidation state of Mn?",
+options:["+2","+4","+7","+3"],
+answer:2
 },
 {
-    q:"Unit of molar conductivity?",
-    options:["Ohm","S cm2 mol-1","Volt","Ampere"],
-    answer:1
+q:"Unit of molar conductivity?",
+options:["Ohm","S cm² mol⁻¹","Volt","Ampere"],
+answer:1
 },
 {
-    q:"Which is strongest reducing agent?",
-    options:["Li","Na","K","Rb"],
-    answer:0
-},
-{
-    q:"Nernst equation is?",
-    options:["E=E°-0.0591/n logQ","PV=nRT","V=IR","H=U+PV"],
-    answer:0
+q:"Nernst Equation is?",
+options:["E=E°-0.0591/n logQ","PV=nRT","V=IR","H=U+PV"],
+answer:0
 }
 ];
 
-let currentQuestion = 0;
-let score = 0;
-let userAnswers = new Array(questions.length).fill(null);
+let current=0;
+let userAnswers=new Array(questions.length).fill(null);
+let submitted=false;
 
 function loadQuestion(){
-    let q = questions[currentQuestion];
-    document.getElementById("question").innerText =
-    (currentQuestion+1)+". "+q.q;
+let q=questions[current];
+document.getElementById("question").innerText=
+(current+1)+". "+q.q;
 
-    let optionsHTML="";
-    q.options.forEach((opt,index)=>{
-        optionsHTML += `<button onclick="selectOption(${index})">${opt}</button>`;
-    });
+let optionsHTML="";
+q.options.forEach((opt,i)=>{
+let className="option";
 
-    document.getElementById("options").innerHTML = optionsHTML;
+if(userAnswers[current]==i) className+=" selected";
+
+if(submitted){
+if(i==q.answer) className+=" correct";
+if(userAnswers[current]==i && i!=q.answer) className+=" wrong";
 }
 
-function selectOption(index){
-    userAnswers[currentQuestion]=index;
+optionsHTML+=`<button class="${className}" onclick="select(${i})">${opt}</button>`;
+});
+
+document.getElementById("options").innerHTML=optionsHTML;
 }
 
-function nextQuestion(){
-    if(currentQuestion<questions.length-1){
-        currentQuestion++;
-        loadQuestion();
-    }
+function select(i){
+if(submitted) return;
+userAnswers[current]=i;
+loadQuestion();
 }
 
-function prevQuestion(){
-    if(currentQuestion>0){
-        currentQuestion--;
-        loadQuestion();
-    }
+function next(){
+if(current<questions.length-1){
+current++;
+loadQuestion();
+}
+}
+
+function prev(){
+if(current>0){
+current--;
+loadQuestion();
+}
 }
 
 function submitTest(){
-    score=0;
-    for(let i=0;i<questions.length;i++){
-        if(userAnswers[i]==questions[i].answer){
-            score++;
-        }
-    }
-
-    document.getElementById("result").innerHTML =
-    "Your Score: "+score+" / "+questions.length;
+submitted=true;
+let score=0;
+for(let i=0;i<questions.length;i++){
+if(userAnswers[i]==questions[i].answer) score++;
+}
+let percent=(score/questions.length*100).toFixed(2);
+document.getElementById("result").innerHTML=
+"Score: "+score+"/"+questions.length+
+"<br>Percentage: "+percent+"%";
+loadQuestion();
 }
 
-// TIMER 60 min
-let time=60*60;
-let timerDisplay=document.getElementById("timer");
+// TIMER
+let time=30*60;
+let timer=document.getElementById("timer");
 
-let countdown=setInterval(function(){
-    let min=Math.floor(time/60);
-    let sec=time%60;
-    timerDisplay.innerHTML="Time Left: "+min+":"+(sec<10?"0"+sec:sec);
-    time--;
-    if(time<0){
-        clearInterval(countdown);
-        alert("Time Over!");
-        submitTest();
-    }
+let countdown=setInterval(()=>{
+let m=Math.floor(time/60);
+let s=time%60;
+timer.innerHTML="Time Left: "+m+":"+(s<10?"0"+s:s);
+time--;
+if(time<0){
+clearInterval(countdown);
+alert("Time Over!");
+submitTest();
+}
 },1000);
-
-// AUTO FULLSCREEN
-document.documentElement.requestFullscreen();
 
 loadQuestion();
 
