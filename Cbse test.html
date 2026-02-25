@@ -2,8 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CBSE Class 12 Chemistry Board Mock</title>
-
+<title>CBSE Chemistry Board Mock</title>
 <style>
 body{
 margin:0;
@@ -11,7 +10,6 @@ font-family:Segoe UI;
 background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 color:white;
 }
-
 .container{
 max-width:1000px;
 margin:20px auto;
@@ -20,16 +18,7 @@ background:rgba(255,255,255,0.08);
 backdrop-filter:blur(15px);
 border-radius:15px;
 }
-
-h2{text-align:center;}
-
-#timer{
-text-align:center;
-font-weight:bold;
-color:#00ffcc;
-margin-bottom:10px;
-}
-
+#timer{text-align:center;color:#00ffcc;font-weight:bold;}
 .option{
 display:block;
 width:100%;
@@ -41,9 +30,15 @@ cursor:pointer;
 background:rgba(255,255,255,0.1);
 color:white;
 }
-
 .option.selected{background:#0072ff;}
-
+.answer-box{
+display:none;
+margin-top:10px;
+padding:10px;
+background:rgba(0,255,0,0.15);
+border-radius:6px;
+white-space:pre-line;
+}
 textarea{
 width:100%;
 height:100px;
@@ -51,20 +46,7 @@ margin-top:8px;
 border-radius:6px;
 padding:6px;
 }
-
-.answer-box{
-display:none;
-margin-top:8px;
-padding:10px;
-background:rgba(0,255,0,0.15);
-border-radius:6px;
-}
-
-.nav{
-text-align:center;
-margin-top:10px;
-}
-
+.nav{text-align:center;margin-top:10px;}
 .nav button{
 padding:8px 15px;
 margin:5px;
@@ -74,26 +56,19 @@ background:#0072ff;
 color:white;
 cursor:pointer;
 }
-
-.result{
-margin-top:10px;
-font-weight:bold;
-text-align:center;
-}
+.result{text-align:center;margin-top:10px;font-weight:bold;}
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
-<h2>CBSE Class 12 Chemistry Board Pattern Mock Test</h2>
+<h2>CBSE Class 12 Chemistry Board Mock Test</h2>
 <div id="timer">Time Left: 180:00</div>
 
 <h3 id="question"></h3>
 <div id="options"></div>
 <textarea id="written" style="display:none;"></textarea>
-
 <div class="answer-box" id="modelAnswer"></div>
 
 <div class="nav">
@@ -109,68 +84,104 @@ text-align:center;
 
 <script>
 
-// ================= QUESTIONS =================
+// ================= DATA =================
 
-let questions=[
+let questions = [];
 
-// -------- SECTION A (MCQ 20) --------
+// -------- 20 MCQ --------
 
-{type:"mcq",q:"IUPAC name of CH3COOH?",options:["Methanoic acid","Ethanoic acid","Propanoic acid","Butanoic acid"],answer:1},
-
-{type:"mcq",q:"Oxidation number of S in H2SO4?",options:["+4","+6","+2","+8"],answer:1},
-
-{type:"mcq",q:"Unit of rate constant of first order reaction?",options:["s⁻¹","mol L⁻¹ s⁻¹","L mol⁻¹ s⁻¹","mol²"],answer:0},
-
-{type:"mcq",q:"Strongest acid among following?",options:["HClO","HClO2","HClO3","HClO4"],answer:3},
-
-{type:"mcq",q:"Coordination number in [Co(NH3)6]³⁺?",options:["4","2","6","3"],answer:2},
-
-{type:"mcq",q:"Shape of SF6?",options:["Tetrahedral","Trigonal planar","Octahedral","Square planar"],answer:2},
-
-{type:"mcq",q:"Which shows hydrogen bonding?",options:["NH3","CH4","CO2","CCl4"],answer:0},
-
-{type:"mcq",q:"Order of reaction in Rate = k[A]²?",options:["1","2","3","0"],answer:1},
-
-{type:"mcq",q:"Nernst equation contains log of?",options:["Temperature","Pressure","Reaction quotient","Voltage"],answer:2},
-
-{type:"mcq",q:"Hybridisation in ethene?",options:["sp","sp2","sp3","sp3d"],answer:1},
-
-{type:"mcq",q:"Colligative property depends on?",options:["Nature","Number of particles","Color","Density"],answer:1},
-
-{type:"mcq",q:"SN1 reaction favoured by?",options:["Primary halide","Secondary halide","Tertiary halide","Methyl"],answer:2},
-
-{type:"mcq",q:"Electrophile among following?",options:["NO2+","Cl-","OH-","CN-"],answer:0},
-
-{type:"mcq",q:"Aromatic compound?",options:["Benzene","Ethane","Propane","Cyclohexane"],answer:0},
-
-{type:"mcq",q:"Zero order unit?",options:["mol L⁻¹ s⁻¹","s⁻¹","L mol⁻¹ s⁻¹","mol⁻²"],answer:0},
-
-{type:"mcq",q:"Primary amine is?",options:["RNH2","R2NH","R3N","R4N+"],answer:0},
-
-{type:"mcq",q:"pH of neutral solution?",options:["5","6","7","8"],answer:2},
-
-{type:"mcq",q:"Which is reducing agent?",options:["Li","Na","K","Rb"],answer:0},
-
-{type:"mcq",q:"Electrochemical series arranged by?",options:["Atomic mass","Reduction potential","Boiling point","Density"],answer:1},
-
-{type:"mcq",q:"Crystal field splitting in octahedral gives how many orbitals?",options:["2 and 3","3 and 2","4 and 2","5 and 1"],answer:0},
-
-// -------- SECTION B (2 MARKS) --------
-
-{type:"long",q:"Define rate of reaction with expression.",answer:"Rate of reaction is change in concentration of reactant or product per unit time.\n\nMathematically:\nRate = -d[R]/dt or d[P]/dt\n\nUnit: mol L⁻¹ s⁻¹\nNegative sign used for reactant because its concentration decreases."},
-
-{type:"long",q:"State Nernst equation and define terms.",answer:"Nernst Equation:\nE = E° - (0.0591/n) log Q\n\nE = electrode potential\nE° = standard electrode potential\nn = number of electrons\nQ = reaction quotient\nIt shows effect of concentration on potential."},
-
-{type:"long",q:"Define colligative properties with examples.",answer:"Colligative properties depend only on number of solute particles.\nExamples:\n• Relative lowering of vapour pressure\n• Elevation of boiling point\n• Depression of freezing point\n• Osmotic pressure"},
-
-// (You can add remaining 2,3,5 marks same pattern)
-
+let mcqData = [
+["IUPAC name of CH3COOH?","Ethanoic acid"],
+["Oxidation number of S in H2SO4?","+6"],
+["Unit of first order rate constant?","s⁻¹"],
+["Strongest acid?","HClO4"],
+["Coordination number in [Co(NH3)6]3+?","6"],
+["Shape of SF6?","Octahedral"],
+["Hybridisation in ethene?","sp2"],
+["pH of neutral solution?","7"],
+["Primary amine?","RNH2"],
+["Electrophile?","NO2+"],
+["Aromatic compound?","Benzene"],
+["Zero order unit?","mol L⁻¹ s⁻¹"],
+["Order of reaction in k[A]²?","2"],
+["Hydrogen bonding present in?","NH3"],
+["SN1 favoured by?","Tertiary halide"],
+["Electrochemical series arranged by?","Reduction potential"],
+["Colligative property depends on?","Number of particles"],
+["Crystal field splitting in octahedral gives?","2 and 3"],
+["Reducing agent?","Li"],
+["Nernst equation contains log of?","Reaction quotient"]
 ];
+
+mcqData.forEach(item=>{
+questions.push({
+type:"mcq",
+q:item[0],
+options:[item[1],"Option B","Option C","Option D"],
+answer:item[1]
+});
+});
+
+// -------- 2 MARKS (10) --------
+
+questions.push(
+{type:"long",q:"Define rate of reaction with mathematical expression.",
+answer:"Rate of reaction is change in concentration of reactant or product per unit time.\nRate = -d[R]/dt or d[P]/dt.\nUnit: mol L⁻¹ s⁻¹."},
+
+{type:"long",q:"State and explain Nernst equation.",
+answer:"E = E° - (0.0591/n) log Q.\nE is electrode potential.\nE° standard potential.\nn number of electrons.\nQ reaction quotient."},
+
+{type:"long",q:"Define colligative properties with examples.",
+answer:"Properties depending only on number of solute particles.\nExamples: boiling point elevation, freezing point depression, osmotic pressure."},
+
+{type:"long",q:"Explain SN1 mechanism.",
+answer:"SN1 occurs in two steps.\nStep 1: Carbocation formation.\nStep 2: Nucleophile attack.\nRate depends only on substrate."},
+
+{type:"long",q:"Explain hybridisation with example.",
+answer:"Hybridisation is mixing of orbitals to form new orbitals.\nExample: sp2 in ethene (120°)."},
+{type:"long",q:"Define adsorption and absorption.",
+answer:"Adsorption is surface phenomenon.\nAbsorption is bulk phenomenon."},
+{type:"long",q:"Define order of reaction.",
+answer:"Sum of powers of concentration terms in rate equation."},
+{type:"long",q:"Define coordination number.",
+answer:"Number of ligand donor atoms attached to central metal."},
+{type:"long",q:"What is hydrogen bonding?",
+answer:"Attractive force between H attached to F,O,N and another electronegative atom."},
+{type:"long",q:"Define electrochemical series.",
+answer:"Arrangement of elements in order of increasing reduction potential."}
+);
+
+// -------- 3 MARKS (5) --------
+
+questions.push(
+{type:"long",q:"Derive integrated rate equation for first order reaction.",
+answer:"For first order:\nRate = k[A]\nAfter integration:\nlog[A]0/[A] = kt/2.303"},
+{type:"long",q:"Differentiate between SN1 and SN2.",
+answer:"SN1: Two step, carbocation, first order.\nSN2: One step, backside attack, second order."},
+{type:"long",q:"Explain boiling point elevation.",
+answer:"ΔTb = Kb m\nIncrease in boiling point due to addition of solute."},
+{type:"long",q:"Explain crystal field splitting.",
+answer:"In octahedral field, d orbitals split into t2g and eg levels."},
+{type:"long",q:"Explain Kolbe reaction.",
+answer:"Phenoxide reacts with CO2 to form salicylic acid."}
+);
+
+// -------- 5 MARKS (3) --------
+
+questions.push(
+{type:"long",q:"Derive Nernst equation completely.",
+answer:"E = E° - (RT/nF) lnQ.\nAt 298K becomes 0.0591/n logQ."},
+{type:"long",q:"Explain electrochemical cell with EMF expression.",
+answer:"EMF = E°cathode - E°anode.\nCell reaction involves oxidation and reduction."},
+{type:"long",q:"Explain Aldol condensation mechanism.",
+answer:"Aldehydes/ketones with α-H form β-hydroxy compound which dehydrates to α,β-unsaturated compound."}
+);
+
+// ================= ENGINE =================
 
 let current=0;
 let userAnswers=new Array(questions.length).fill(null);
 
-// LOAD QUESTION
 function loadQuestion(){
 let q=questions[current];
 document.getElementById("question").innerText=(current+1)+". "+q.q;
@@ -179,10 +190,9 @@ document.getElementById("modelAnswer").style.display="none";
 if(q.type=="mcq"){
 document.getElementById("written").style.display="none";
 let html="";
-q.options.forEach((opt,i)=>{
-let className="option";
-if(userAnswers[current]==i) className+=" selected";
-html+=`<button class="${className}" onclick="select(${i})">${opt}</button>`;
+q.options.forEach(opt=>{
+let selected = userAnswers[current]==opt ? "selected":"";
+html+=`<button class="option ${selected}" onclick="select('${opt}')">${opt}</button>`;
 });
 document.getElementById("options").innerHTML=html;
 }else{
@@ -191,21 +201,17 @@ document.getElementById("written").style.display="block";
 }
 }
 
-function select(i){
-userAnswers[current]=i;
+function select(opt){
+userAnswers[current]=opt;
 loadQuestion();
 }
 
-function next(){if(current<questions.length-1){current++;loadQuestion();}}
-function prev(){if(current>0){current--;loadQuestion();}}
+function next(){ if(current<questions.length-1){current++;loadQuestion();}}
+function prev(){ if(current>0){current--;loadQuestion();}}
 
 function showAnswer(){
-let q=questions[current];
-if(q.type!="mcq"){
-let box=document.getElementById("modelAnswer");
-box.innerText=q.answer;
-box.style.display="block";
-}
+document.getElementById("modelAnswer").innerText=questions[current].answer || "Answer not applicable.";
+document.getElementById("modelAnswer").style.display="block";
 }
 
 function submitTest(){
@@ -213,23 +219,20 @@ let score=0;
 for(let i=0;i<20;i++){
 if(userAnswers[i]==questions[i].answer) score++;
 }
-document.getElementById("result").innerHTML="MCQ Score: "+score+"/20 (No Negative Marking)";
+document.getElementById("result").innerHTML="MCQ Score: "+score+"/20";
 }
 
-// TIMER 3 HOURS
+// TIMER
 let time=180*60;
-let timer=document.getElementById("timer");
 setInterval(()=>{
 let m=Math.floor(time/60);
 let s=time%60;
-timer.innerHTML="Time Left: "+m+":"+(s<10?"0"+s:s);
+document.getElementById("timer").innerHTML="Time Left: "+m+":"+(s<10?"0"+s:s);
 time--;
-if(time<0){alert("Time Over");submitTest();}
 },1000);
 
 loadQuestion();
 
 </script>
-
 </body>
 </html>
