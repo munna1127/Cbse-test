@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemistry Mock Test - Premium</title>
+
+<style>
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#141e30,#243b55);
+    color:white;
+}
+
+.container{
+    max-width:900px;
+    margin:20px auto;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(15px);
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 25px rgba(0,0,0,0.5);
+}
+
+h1{
+    text-align:center;
+    letter-spacing:1px;
+}
+
+.question{
+    margin-bottom:20px;
+    padding:15px;
+    background:rgba(255,255,255,0.05);
+    border-radius:10px;
+}
+
+textarea{
+    width:100%;
+    min-height:80px;
+    border-radius:8px;
+    padding:8px;
+    border:none;
+}
+
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    color:white;
+    cursor:pointer;
+    margin:5px;
+    font-weight:bold;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+#timer{
+    text-align:center;
+    font-size:20px;
+    color:#00ffcc;
+    font-weight:bold;
+}
+.warning{
+    color:red;
+    font-weight:bold;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>CBSE Class 12 Chemistry Mock Test</h1>
+<div id="timer">Time Left: 180:00</div>
+<div class="warning" id="warning"></div>
+
+<div class="question">
+1. IUPAC name of CH3COOH:<br>
+<input type="radio" name="q1" value="a"> Methanoic acid<br>
+<input type="radio" name="q1" value="b"> Ethanoic acid<br>
+<input type="radio" name="q1" value="c"> Propanoic acid<br>
+<input type="radio" name="q1" value="d"> Butanoic acid<br>
+</div>
+
+<div class="question">
+2. Max oxidation state element:<br>
+<input type="radio" name="q2" value="a"> Mn<br>
+<input type="radio" name="q2" value="b"> Fe<br>
+<input type="radio" name="q2" value="c"> Cu<br>
+<input type="radio" name="q2" value="d"> Zn<br>
+</div>
+
+<button onclick="submitTest()">Submit Test</button>
+
+<p id="result"></p>
+
+</div>
+
+<script>
+
+// FORCE FULLSCREEN
+function enterFullscreen() {
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    }
+}
+enterFullscreen();
+
+// DETECT EXIT FULLSCREEN
+document.addEventListener("fullscreenchange", function() {
+    if (!document.fullscreenElement) {
+        document.getElementById("warning").innerHTML = 
+        "⚠ Fullscreen exited! Please return to fullscreen.";
+        enterFullscreen();
+    }
+});
+
+// TIMER
+let time = 180 * 60;
+let timerDisplay = document.getElementById("timer");
+
+let countdown = setInterval(function(){
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+
+    timerDisplay.innerHTML = "Time Left: " + minutes + ":" + 
+    (seconds < 10 ? "0" + seconds : seconds);
+
+    time--;
+
+    if(time < 0){
+        clearInterval(countdown);
+        alert("Time Over! Auto Submitted.");
+        submitTest();
+    }
+},1000);
+
+// SUBMIT
+function submitTest(){
+    let score = 0;
+    if(document.querySelector('input[name="q1"]:checked')?.value=="b") score++;
+    if(document.querySelector('input[name="q2"]:checked')?.value=="a") score++;
+    document.getElementById("result").innerHTML="Score: "+score+"/2";
+}
+
+</script>
+
+</body>
+</html>
