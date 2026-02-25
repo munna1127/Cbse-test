@@ -2,79 +2,145 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CBSE Class 12 Chemistry Mock</title>
+<title>CBSE Class 12 Chemistry Board Mock</title>
+
 <style>
+
 body{
 margin:0;
 font-family:Segoe UI;
 background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 color:white;
 }
+
 .container{
-max-width:1000px;
+max-width:1100px;
 margin:20px auto;
-padding:20px;
+padding:25px;
 background:rgba(255,255,255,0.08);
 backdrop-filter:blur(15px);
 border-radius:15px;
+box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
-#timer{text-align:center;color:#00ffcc;font-weight:bold;}
+
+h2{
+text-align:center;
+margin-bottom:10px;
+}
+
+#timer{
+text-align:center;
+color:#00ffcc;
+font-weight:bold;
+font-size:18px;
+margin-bottom:15px;
+}
+
+.section-label{
+font-weight:bold;
+margin-top:10px;
+margin-bottom:5px;
+color:#ffd700;
+}
+
 .option{
 display:block;
 width:100%;
-padding:8px;
-margin:6px 0;
+padding:10px;
+margin:8px 0;
 border:none;
-border-radius:6px;
+border-radius:8px;
 cursor:pointer;
 background:rgba(255,255,255,0.1);
 color:white;
+font-size:14px;
 }
-.option.selected{background:#0072ff;}
-.answer-box{
-display:none;
-margin-top:10px;
-padding:10px;
-background:rgba(0,255,0,0.15);
-border-radius:6px;
-white-space:pre-line;
+
+.option:hover{
+background:#0072ff;
 }
+
+.option.selected{
+background:#0072ff;
+}
+
+.option.correct{
+background:green !important;
+}
+
+.option.wrong{
+background:red !important;
+}
+
 textarea{
 width:100%;
-height:100px;
-margin-top:8px;
-border-radius:6px;
-padding:6px;
+height:120px;
+margin-top:10px;
+border-radius:8px;
+padding:10px;
+font-size:14px;
 }
-.nav{text-align:center;margin-top:10px;}
+
+.answer-box{
+display:none;
+margin-top:12px;
+padding:12px;
+background:rgba(0,255,0,0.15);
+border-radius:8px;
+white-space:pre-line;
+font-size:14px;
+}
+
+.nav{
+text-align:center;
+margin-top:20px;
+}
+
 .nav button{
-padding:8px 15px;
-margin:5px;
+padding:10px 18px;
+margin:6px;
 border:none;
-border-radius:6px;
+border-radius:8px;
 background:#0072ff;
 color:white;
+font-size:14px;
 cursor:pointer;
 }
-.result{text-align:center;margin-top:10px;font-weight:bold;}
+
+.nav button:hover{
+opacity:0.9;
+}
+
+.result{
+text-align:center;
+margin-top:15px;
+font-weight:bold;
+font-size:16px;
+}
+
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
-<h2>CBSE Class 12 Chemistry Board Pattern Mock</h2>
+<h2>CBSE Class 12 Chemistry – Full Board Pattern Mock Test</h2>
 <div id="timer">Time Left: 180:00</div>
 
+<div id="sectionTitle" class="section-label"></div>
+
 <h3 id="question"></h3>
+
 <div id="options"></div>
-<textarea id="written" style="display:none;"></textarea>
+
+<textarea id="writtenAnswer" style="display:none;"></textarea>
+
 <div class="answer-box" id="modelAnswer"></div>
 
 <div class="nav">
-<button onclick="prev()">Previous</button>
-<button onclick="next()">Next</button>
-<button onclick="showAnswer()">View Answer</button>
+<button onclick="prevQuestion()">Previous</button>
+<button onclick="nextQuestion()">Next</button>
 <button onclick="submitTest()">Submit</button>
 </div>
 
@@ -82,156 +148,569 @@ cursor:pointer;
 
 </div>
 
-<script>
+<!-- JS will start here in Part 2 -->
+  <script>
 
-// ================= QUESTION DATA =================
+// ================= MASTER DATA ARRAY =================
+// Part 3,4,5,6 me isko fill karenge
 
 let questions = [
 
-/* ================= 20 MCQ ================= */
+/* ================= SECTION A – 1 MARK MCQs ================= */
 
 {
+section:"Section A – 1 Mark Questions (MCQ)",
 type:"mcq",
 q:"1. The IUPAC name of CH3COOH is:",
-options:["Methanoic acid","Ethanoic acid","Propanoic acid","Butanoic acid"],
+options:[
+"A) Methanoic acid",
+"B) Ethanoic acid",
+"C) Propanoic acid",
+"D) Butanoic acid"
+],
 answer:1
 },
+
 {
+section:"Section A – 1 Mark Questions (MCQ)",
 type:"mcq",
 q:"2. Oxidation number of sulphur in H2SO4 is:",
-options:["+4","+6","+2","+8"],
+options:[
+"A) +4",
+"B) +6",
+"C) +2",
+"D) +8"
+],
 answer:1
 },
+
 {
+section:"Section A – 1 Mark Questions (MCQ)",
 type:"mcq",
 q:"3. Unit of rate constant for first order reaction is:",
-options:["s⁻¹","mol L⁻¹ s⁻¹","L mol⁻¹ s⁻¹","mol²"],
+options:[
+"A) s⁻¹",
+"B) mol L⁻¹ s⁻¹",
+"C) L mol⁻¹ s⁻¹",
+"D) mol²"
+],
 answer:0
 },
+
 {
+section:"Section A – 1 Mark Questions (MCQ)",
 type:"mcq",
-q:"4. Strongest acid among following:",
-options:["HClO","HClO2","HClO3","HClO4"],
+q:"4. Strongest acid among the following is:",
+options:[
+"A) HClO",
+"B) HClO2",
+"C) HClO3",
+"D) HClO4"
+],
 answer:3
 },
+
 {
+section:"Section A – 1 Mark Questions (MCQ)",
 type:"mcq",
-q:"5. Coordination number of Co in [Co(NH3)6]3+ is:",
-options:["4","2","6","3"],
+q:"5. Coordination number of cobalt in [Co(NH3)6]³⁺ is:",
+options:[
+"A) 4",
+"B) 2",
+"C) 6",
+"D) 3"
+],
 answer:2
 },
 
-/* (You can continue similar pattern for rest MCQs to keep length manageable) */
-
-
-/* ================= 2 MARKS (DETAILED) ================= */
-
 {
-type:"long",
-q:"Define rate of reaction and give mathematical expression.",
-answer:
-"Rate of reaction is defined as the change in concentration of reactant or product per unit time.\n\nFor reactant:\nRate = - d[R]/dt\n\nFor product:\nRate = d[P]/dt\n\nUnit: mol L⁻¹ s⁻¹.\nNegative sign is used because concentration of reactant decreases with time."
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"6. Shape of SF6 molecule is:",
+options:[
+"A) Tetrahedral",
+"B) Trigonal planar",
+"C) Octahedral",
+"D) Square planar"
+],
+answer:2
 },
 
 {
-type:"long",
-q:"State Nernst equation and explain its terms.",
-answer:
-"Nernst equation:\nE = E° - (0.0591/n) log Q\n\nWhere:\nE = Electrode potential\nE° = Standard electrode potential\nn = Number of electrons transferred\nQ = Reaction quotient\n\nIt shows how electrode potential changes with concentration."
-},
-
-/* ================= 3 MARKS ================= */
-
-{
-type:"long",
-q:"Derive integrated rate equation for first order reaction.",
-answer:
-"For first order reaction:\nRate = k[A]\n\nSeparating variables:\nd[A]/[A] = -k dt\n\nOn integrating:\nln[A] = -kt + C\n\nAt t=0, [A]=[A]₀\n\nSo,\nln([A]₀/[A]) = kt\n\nOr\nlog([A]₀/[A]) = kt/2.303\n\nThis is integrated rate equation for first order reaction."
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"7. Hybridisation of carbon in ethene (C2H4) is:",
+options:[
+"A) sp",
+"B) sp2",
+"C) sp3",
+"D) sp3d"
+],
+answer:1
 },
 
 {
-type:"long",
-q:"Differentiate between SN1 and SN2 reaction.",
-answer:
-"SN1 Reaction:\n• Two step mechanism\n• Carbocation intermediate formed\n• Rate depends only on substrate\n• Favoured by tertiary alkyl halides\n\nSN2 Reaction:\n• One step mechanism\n• No intermediate\n• Rate depends on substrate and nucleophile\n• Favoured by primary alkyl halides"
-},
-
-/* ================= 5 MARKS ================= */
-
-{
-type:"long",
-q:"Derive Nernst equation.",
-answer:
-"For general reaction:\naA + bB → cC + dD\n\nΔG = ΔG° + RT lnQ\n\nBut ΔG = -nFE and ΔG° = -nFE°\n\nSo,\n-nFE = -nFE° + RT lnQ\n\nDividing by -nF:\nE = E° - (RT/nF) lnQ\n\nAt 298K,\nE = E° - (0.0591/n) logQ\n\nThis is Nernst equation."
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"8. pH of pure water at 25°C is:",
+options:[
+"A) 5",
+"B) 6",
+"C) 7",
+"D) 8"
+],
+answer:2
 },
 
 {
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"9. Which of the following is a primary amine?",
+options:[
+"A) RNH2",
+"B) R2NH",
+"C) R3N",
+"D) R4N+"
+],
+answer:0
+},
+
+{
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"10. Which of the following is an electrophile?",
+options:[
+"A) Cl⁻",
+"B) OH⁻",
+"C) NO2⁺",
+"D) CN⁻"
+],
+answer:2
+},
+
+{
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"11. Aromatic compound among following is:",
+options:[
+"A) Cyclohexane",
+"B) Benzene",
+"C) Ethane",
+"D) Propane"
+],
+answer:1
+},
+
+{
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"12. Unit of rate constant for zero order reaction is:",
+options:[
+"A) mol L⁻¹ s⁻¹",
+"B) s⁻¹",
+"C) L mol⁻¹ s⁻¹",
+"D) mol²"
+],
+answer:0
+},
+
+{
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"13. Order of reaction in Rate = k[A]² is:",
+options:[
+"A) 1",
+"B) 2",
+"C) 3",
+"D) 0"
+],
+answer:1
+},
+
+{
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"14. Hydrogen bonding is present in:",
+options:[
+"A) CH4",
+"B) NH3",
+"C) CO2",
+"D) CCl4"
+],
+answer:1
+},
+
+{
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"15. SN1 reaction is favoured by:",
+options:[
+"A) Primary alkyl halide",
+"B) Secondary alkyl halide",
+"C) Tertiary alkyl halide",
+"D) Methyl halide"
+],
+answer:2
+},
+
+{
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"16. Electrochemical series is arranged in order of:",
+options:[
+"A) Atomic mass",
+"B) Increasing reduction potential",
+"C) Density",
+"D) Atomic radius"
+],
+answer:1
+},
+
+{
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"17. Colligative properties depend on:",
+options:[
+"A) Nature of solute",
+"B) Number of solute particles",
+"C) Temperature only",
+"D) Pressure only"
+],
+answer:1
+},
+
+{
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"18. In octahedral complex, d-orbitals split into:",
+options:[
+"A) 2 and 3 sets",
+"B) 3 and 2 sets",
+"C) 4 and 1 sets",
+"D) 5 equal sets"
+],
+answer:0
+},
+
+{
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"19. The strongest reducing agent among alkali metals is:",
+options:[
+"A) Li",
+"B) Na",
+"C) K",
+"D) Rb"
+],
+answer:0
+},
+
+{
+section:"Section A – 1 Mark Questions (MCQ)",
+type:"mcq",
+q:"20. Nernst equation contains logarithm of:",
+options:[
+"A) Temperature",
+"B) Pressure",
+"C) Reaction quotient (Q)",
+"D) EMF"
+],
+answer:2
+}
+
+,
+  /* ================= SECTION B – 2 MARK QUESTIONS ================= */
+
+{
+section:"Section B – 2 Marks Questions",
 type:"long",
-q:"Explain Aldol condensation with mechanism.",
+q:"21. Define rate of reaction and write its mathematical expression.",
 answer:
-"Aldehydes or ketones having α-hydrogen undergo condensation in presence of dilute base.\n\nStep 1: Formation of enolate ion\nStep 2: Nucleophilic attack on carbonyl carbon\nStep 3: Formation of β-hydroxy aldehyde\nStep 4: Dehydration gives α,β-unsaturated aldehyde\n\nThis reaction is called Aldol condensation."
+"Rate of reaction is defined as the change in concentration of reactant or product per unit time.\n\nFor reactant:\nRate = - d[R]/dt\n\nFor product:\nRate = d[P]/dt\n\nUnit: mol L⁻¹ s⁻¹.\nThe negative sign is used for reactant because its concentration decreases with time."
+},
+
+{
+section:"Section B – 2 Marks Questions",
+type:"long",
+q:"22. State Nernst equation and explain its terms.",
+answer:
+"Nernst equation is:\nE = E° - (0.0591/n) log Q\n\nWhere:\nE = Electrode potential\nE° = Standard electrode potential\nn = Number of electrons transferred\nQ = Reaction quotient\n\nIt shows the effect of concentration on electrode potential."
+},
+
+{
+section:"Section B – 2 Marks Questions",
+type:"long",
+q:"23. Define colligative properties. Give two examples.",
+answer:
+"Colligative properties are those properties of solutions which depend only on the number of solute particles and not on their nature.\n\nExamples:\n1. Elevation of boiling point\n2. Depression of freezing point\n3. Osmotic pressure\n4. Relative lowering of vapour pressure"
+},
+
+{
+section:"Section B – 2 Marks Questions",
+type:"long",
+q:"24. Define hybridisation. Explain sp² hybridisation with example.",
+answer:
+"Hybridisation is the intermixing of atomic orbitals of nearly same energy to form new hybrid orbitals of equal energy.\n\nIn sp² hybridisation:\nOne s orbital and two p orbitals mix to form three sp² hybrid orbitals.\n\nGeometry: Trigonal planar\nBond angle: 120°\nExample: Ethene (C2H4)."
+},
+
+{
+section:"Section B – 2 Marks Questions",
+type:"long",
+q:"25. Differentiate between adsorption and absorption.",
+answer:
+"Adsorption:\n• Surface phenomenon\n• Concentration higher on surface\n• Exothermic process\n\nAbsorption:\n• Bulk phenomenon\n• Uniform distribution throughout\n• May be endothermic or exothermic"
+},
+
+{
+section:"Section B – 2 Marks Questions",
+type:"long",
+q:"26. Define order of reaction with example.",
+answer:
+"Order of reaction is the sum of the powers of concentration terms in the rate equation.\n\nExample:\nIf Rate = k[A]²[B],\nThen order = 2 + 1 = 3."
+},
+
+{
+section:"Section B – 2 Marks Questions",
+type:"long",
+q:"27. Define coordination number with example.",
+answer:
+"Coordination number is the number of ligand donor atoms bonded to the central metal atom.\n\nExample:\nIn [Co(NH3)6]³⁺, coordination number of cobalt is 6."
+},
+
+{
+section:"Section B – 2 Marks Questions",
+type:"long",
+q:"28. What is hydrogen bonding? Mention its types.",
+answer:
+"Hydrogen bonding is the attractive force between hydrogen atom attached to a highly electronegative atom (F, O, N) and another electronegative atom.\n\nTypes:\n1. Intermolecular hydrogen bonding\n2. Intramolecular hydrogen bonding"
+},
+
+{
+section:"Section B – 2 Marks Questions",
+type:"long",
+q:"29. Define electrochemical series. State one importance.",
+answer:
+"Electrochemical series is the arrangement of elements in order of increasing standard reduction potential.\n\nImportance:\nIt helps in predicting the direction of redox reactions."
+},
+
+{
+section:"Section B – 2 Marks Questions",
+type:"long",
+q:"30. What is SN1 reaction? Mention two characteristics.",
+answer:
+"SN1 reaction is unimolecular nucleophilic substitution reaction.\n\nCharacteristics:\n1. Occurs in two steps\n2. Carbocation intermediate formed\n3. Rate depends only on concentration of substrate\n4. Favoured by tertiary alkyl halides"
+    }
+  ,
+  /* ================= SECTION C – 3 MARK QUESTIONS ================= */
+
+{
+section:"Section C – 3 Marks Questions",
+type:"long",
+q:"31. Derive integrated rate equation for first order reaction.",
+answer:
+"For a first order reaction:\n\nRate = k[A]\n\nSeparating variables:\nd[A]/[A] = -k dt\n\nIntegrating:\n∫ d[A]/[A] = -k ∫ dt\n\nln[A] = -kt + C\n\nAt t = 0, [A] = [A]₀\n\nSo,\nln([A]₀/[A]) = kt\n\nOr in log form:\nlog([A]₀/[A]) = kt / 2.303\n\nThis is the integrated rate equation for first order reaction."
+},
+
+{
+section:"Section C – 3 Marks Questions",
+type:"long",
+q:"32. Differentiate between SN1 and SN2 reactions.",
+answer:
+"SN1 Reaction:\n• Two step mechanism\n• Carbocation intermediate formed\n• First order reaction\n• Favoured by tertiary alkyl halides\n\nSN2 Reaction:\n• One step mechanism\n• No intermediate\n• Second order reaction\n• Favoured by primary alkyl halides\n• Backside attack takes place"
+},
+
+{
+section:"Section C – 3 Marks Questions",
+type:"long",
+q:"33. Explain elevation of boiling point and derive its formula.",
+answer:
+"When a non-volatile solute is added to a solvent, its boiling point increases.\n\nElevation of boiling point (ΔTb) is directly proportional to molality (m).\n\nΔTb = Kb × m\n\nWhere:\nKb = Molal elevation constant\nm = Molality of solution\n\nThis is a colligative property because it depends only on number of solute particles."
+},
+
+{
+section:"Section C – 3 Marks Questions",
+type:"long",
+q:"34. Explain crystal field splitting in octahedral complexes.",
+answer:
+"In octahedral complexes, five d-orbitals split into two sets due to interaction with ligands.\n\nLower energy set: t2g (dxy, dyz, dzx)\nHigher energy set: eg (dx²−y², dz²)\n\nThe energy difference between these sets is called crystal field splitting energy (Δo).\n\nThe magnitude depends on nature of ligand."
+},
+
+{
+section:"Section C – 3 Marks Questions",
+type:"long",
+q:"35. Explain Kolbe’s reaction and Reimer–Tiemann reaction.",
+answer:
+"Kolbe’s Reaction:\nPhenoxide ion reacts with CO₂ under pressure to give salicylic acid after acidification.\n\nReimer–Tiemann Reaction:\nPhenol reacts with chloroform in presence of NaOH to give salicylaldehyde.\n\nBoth are important reactions of phenols frequently asked in board exams."
+},
+  /* ================= SECTION D – 5 MARK QUESTIONS ================= */
+
+{
+section:"Section D – 5 Marks Questions",
+type:"long",
+q:"36. Derive Nernst equation for electrode potential.",
+answer:
+"Consider a general reaction:\naA + bB → cC + dD\n\nThe Gibbs free energy change is given by:\nΔG = ΔG° + RT lnQ\n\nBut,\nΔG = -nFE\nΔG° = -nFE°\n\nSubstituting:\n-nFE = -nFE° + RT lnQ\n\nDividing both sides by -nF:\nE = E° - (RT/nF) lnQ\n\nAt 298 K,\nR = 8.314 J mol⁻¹ K⁻¹\nF = 96500 C mol⁻¹\n\nSo,\nE = E° - (0.0591/n) logQ\n\nThis is the Nernst equation."
+},
+
+{
+section:"Section D – 5 Marks Questions",
+type:"long",
+q:"37. Explain electrochemical cell with labelled diagram and derive expression for EMF.",
+answer:
+"An electrochemical cell converts chemical energy into electrical energy.\n\nExample: Daniell cell\nZn | Zn²⁺ || Cu²⁺ | Cu\n\nOxidation at anode:\nZn → Zn²⁺ + 2e⁻\n\nReduction at cathode:\nCu²⁺ + 2e⁻ → Cu\n\nOverall reaction:\nZn + Cu²⁺ → Zn²⁺ + Cu\n\nEMF of cell:\nE°cell = E°cathode - E°anode\n\nCell works because electrons flow from anode to cathode."
+},
+
+{
+section:"Section D – 5 Marks Questions",
+type:"long",
+q:"38. Explain Aldol condensation with mechanism.",
+answer:
+"Aldol condensation occurs in aldehydes or ketones containing α-hydrogen.\n\nStep 1: Formation of enolate ion\nIn presence of dilute base, α-hydrogen is removed forming enolate ion.\n\nStep 2: Nucleophilic attack\nEnolate ion attacks carbonyl carbon of another molecule.\n\nStep 3: Formation of β-hydroxy aldehyde (Aldol)\n\nStep 4: Dehydration\nOn heating, aldol loses water forming α,β-unsaturated compound.\n\nThis reaction is important and frequently asked in board exams."
 }
 
 ];
 
-// ================= ENGINE =================
+let currentQuestionIndex = 0;
+let userAnswers = [];
+let submitted = false;
 
-let current=0;
-let userAnswers=new Array(questions.length).fill(null);
+// ================= LOAD QUESTION =================
 
-function loadQuestion(){
-let q=questions[current];
-document.getElementById("question").innerText=q.q;
-document.getElementById("modelAnswer").style.display="none";
+function loadQuestion() {
 
-if(q.type=="mcq"){
-document.getElementById("written").style.display="none";
-let html="";
-q.options.forEach((opt,i)=>{
-let selected = userAnswers[current]==i ? "selected":"";
-html+=`<button class="option ${selected}" onclick="select(${i})">${opt}</button>`;
+if(questions.length === 0) return;
+
+let q = questions[currentQuestionIndex];
+
+document.getElementById("question").innerText = q.q;
+document.getElementById("modelAnswer").style.display = "none";
+document.getElementById("writtenAnswer").style.display = "none";
+document.getElementById("options").innerHTML = "";
+
+// Section title
+document.getElementById("sectionTitle").innerText = q.section;
+
+// ===== MCQ =====
+if(q.type === "mcq"){
+
+let optionsHTML = "";
+
+q.options.forEach((opt, index) => {
+
+let className = "option";
+
+if(userAnswers[currentQuestionIndex] === index)
+className += " selected";
+
+if(submitted){
+if(index === q.answer)
+className += " correct";
+
+if(userAnswers[currentQuestionIndex] === index && index !== q.answer)
+className += " wrong";
+}
+
+optionsHTML += `<button class="${className}" onclick="selectOption(${index})">${opt}</button>`;
+
 });
-document.getElementById("options").innerHTML=html;
-}else{
-document.getElementById("options").innerHTML="";
-document.getElementById("written").style.display="block";
-}
+
+document.getElementById("options").innerHTML = optionsHTML;
+
 }
 
-function select(i){
-userAnswers[current]=i;
+// ===== LONG ANSWER =====
+else {
+
+document.getElementById("writtenAnswer").style.display = "block";
+
+if(submitted){
+document.getElementById("modelAnswer").innerText = q.answer;
+document.getElementById("modelAnswer").style.display = "block";
+}
+
+}
+
+}
+
+// ================= SELECT MCQ OPTION =================
+
+function selectOption(index){
+
+if(submitted) return;
+
+userAnswers[currentQuestionIndex] = index;
+loadQuestion();
+
+}
+
+// ================= NAVIGATION =================
+
+function nextQuestion(){
+
+if(currentQuestionIndex < questions.length - 1){
+currentQuestionIndex++;
 loadQuestion();
 }
 
-function next(){ if(current<questions.length-1){current++;loadQuestion();}}
-function prev(){ if(current>0){current--;loadQuestion();}}
-
-function showAnswer(){
-document.getElementById("modelAnswer").innerText=questions[current].answer;
-document.getElementById("modelAnswer").style.display="block";
 }
 
+function prevQuestion(){
+
+if(currentQuestionIndex > 0){
+currentQuestionIndex--;
+loadQuestion();
+}
+
+}
+
+// ================= SUBMIT =================
+
 function submitTest(){
-let score=0;
-for(let i=0;i<questions.length;i++){
-if(questions[i].type=="mcq" && userAnswers[i]==questions[i].answer){
+
+submitted = true;
+
+let score = 0;
+
+questions.forEach((q, i) => {
+
+if(q.type === "mcq"){
+if(userAnswers[i] === q.answer){
 score++;
 }
 }
-document.getElementById("result").innerHTML="MCQ Score: "+score;
-}
 
-// TIMER
-let time=180*60;
-setInterval(()=>{
-let m=Math.floor(time/60);
-let s=time%60;
-document.getElementById("timer").innerHTML="Time Left: "+m+":"+(s<10?"0"+s:s);
-time--;
-},1000);
+});
+
+document.getElementById("result").innerHTML =
+"MCQ Score: " + score + " / 20<br>All correct answers are now highlighted.";
 
 loadQuestion();
 
-</script>
+}
+
+// ================= TIMER (3 HOURS) =================
+
+let time = 180 * 60;
+
+let countdown = setInterval(function(){
+
+let minutes = Math.floor(time / 60);
+let seconds = time % 60;
+
+document.getElementById("timer").innerText =
+"Time Left: " + minutes + ":" + (seconds < 10 ? "0"+seconds : seconds);
+
+time--;
+
+if(time < 0){
+clearInterval(countdown);
+submitTest();
+alert("Time Over! Test Submitted.");
+}
+
+},1000);
+
+   </script>
+
 </body>
 </html>
