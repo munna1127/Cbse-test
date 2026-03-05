@@ -1,486 +1,596 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mathongo Style JEE Report</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background: #f5f7fb;
-        }
 
-        .section {
-            background: white;
-            padding: 40px;
-            margin-bottom: 40px;
-            border-radius: 10px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
-        }
+<title>JEE ULTRA AI Report</title>
 
-        h2 {
-            margin-bottom: 20px;
-        }
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
+<style>
 
-        .card {
-            border: 1px solid #eee;
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px;
-            background: #fff;
-        }
+body{
+font-family:Arial;
+margin:30px;
+background:#f5f7fb;
+}
 
-        .big {
-            font-size: 28px;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #333;
-        }
+.section{
+background:white;
+padding:30px;
+margin-bottom:40px;
+border-radius:10px;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
 
-        canvas {
-            max-height: 350px;
-        }
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+.card{
+border:1px solid #eee;
+padding:20px;
+border-radius:8px;
+text-align:center;
+}
 
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            text-align: center;
-        }
+.big{
+font-size:28px;
+font-weight:bold;
+}
 
-        input[type="file"] {
-            margin-bottom: 30px;
-            padding: 10px;
-            background: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
+canvas{
+max-height:350px;
+}
+
+.heat{
+display:grid;
+grid-template-columns:repeat(10,1fr);
+gap:6px;
+}
+
+.box{
+padding:10px;
+text-align:center;
+border-radius:5px;
+color:white;
+}
+
+</style>
+
 </head>
+
+
 <body>
 
-    <h1>JEE Test Detailed Analysis</h1>
-    <input type="file" id="fileInput" accept=".json">
+<h1>JEE ULTRA AI Analytics</h1>
 
-    <div id="overview"></div>
-    <div id="subjectAnalysis"></div>
-    <div id="accuracyGraph"></div>
-    <div id="difficultyAnalysis"></div>
-    <div id="timePerQuestion"></div>
-    <div id="timelineAnalysis"></div>
-    <div id="attemptQuality"></div>
-    <div id="painfulQuestions"></div>
-    <div id="missedConcepts"></div>
-    <div id="heatmap"></div>
-    <div id="subjectMovement"></div>
-    <div id="weakTopics"></div>
-    <div id="questionTable"></div>
-    <div id="performanceSummary"></div>
+<input type="file" id="file">
 
-    <script>
-        document.getElementById("fileInput").addEventListener("change", function () {
-            let reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    let data = JSON.parse(e.target.result);
-                    startAnalysis(data);
-                } catch (error) {
-                    alert("Invalid JSON file! Please upload a correct JSON format.");
-                }
-            };
-            if(this.files[0]) {
-                reader.readAsText(this.files[0]);
-            }
-        });
+<div id="overview"></div>
+<div id="rank"></div>
+<div id="subject"></div>
+<div id="difficulty"></div>
+<div id="behavior"></div>
+<div id="radar"></div>
+<div id="heatmap"></div>
+<div id="concept"></div>
+<div id="optimizer"></div>
+<div id="study"></div>
 
-        function startAnalysis(data) {
-            
-            /* ===========================
-               PART 1 — OVERVIEW ENGINE
-            =========================== */
-            function generateOverview(data) {
-                let correct = data.correct || 0;
-                let incorrect = data.incorrect || 0;
-                let attempted = data.attempted || 0;
-                let total = data.responses ? data.responses.length : 0;
 
-                // FIXED: correct4 -> correct * 4
-                let score = (correct * 4) - incorrect;
-                
-                // FIXED: attempted100 -> (correct / attempted) * 100
-                let accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
-                let unattempted = total - attempted;
+<script>
 
-                let totalTime = 0;
-                if (data.responses) {
-                    data.responses.forEach(r => {
-                        if (!r) return;
-                        totalTime += r.time || 0;
-                    });
-                }
+document.getElementById("file").addEventListener("change",function(){
 
-                let avgTime = attempted ? Math.round(totalTime / attempted) : 0;
+let reader=new FileReader()
 
-                let physicsAttempt = 0;
-                let chemistryAttempt = 0;
-                let mathsAttempt = 0;
+reader.onload=(e)=>{
 
-                if (data.responses) {
-                    data.responses.forEach(r => {
-                        if (!r) return;
-                        if (r.subject === "Physics") physicsAttempt++;
-                        if (r.subject === "Chemistry") chemistryAttempt++;
-                        if (r.subject === "Maths") mathsAttempt++;
-                    });
-                }
+let data=JSON.parse(e.target.result)
 
-                let html = `
-                <div class="section">  
-                    <h2>Overview</h2>    
-                    <div class="grid">    
-                        <div class="card">Score<div class="big">${score}</div></div>    
-                        <div class="card">Accuracy<div class="big">${accuracy}%</div></div>    
-                        <div class="card">Attempted<div class="big">${attempted}</div></div>    
-                        <div class="card">Unattempted<div class="big">${unattempted}</div></div>
-                    </div>    
-                    <br>    
-                    <div class="grid">    
-                        <div class="card">Avg Time / Question<div class="big">${avgTime}s</div></div>    
-                        <div class="card">Physics Attempts<div class="big">${physicsAttempt}</div></div>    
-                        <div class="card">Chemistry Attempts<div class="big">${chemistryAttempt}</div></div>    
-                        <div class="card">Maths Attempts<div class="big">${mathsAttempt}</div></div>
-                    </div>  
-                </div>`;
-                document.getElementById("overview").innerHTML = html;
-            }
+runAI(data)
 
-            /* ===========================
-               PART 2 — SUBJECT ANALYSIS
-            =========================== */
-            function generateSubjectAnalysis(data) {
-                let subjects = {
-                    Physics: { correct: 0, incorrect: 0, attempt: 0 },
-                    Chemistry: { correct: 0, incorrect: 0, attempt: 0 },
-                    Maths: { correct: 0, incorrect: 0, attempt: 0 }
-                };
+}
 
-                if (data.responses) {
-                    data.responses.forEach(r => {
-                        if (!r || !r.subject || !subjects[r.subject]) return; // Saftey check
-                        let sub = r.subject;
-                        subjects[sub].attempt++;
+reader.readAsText(this.files[0])
 
-                        if (r.selected == r.correct) {
-                            subjects[sub].correct++;
-                        } else {
-                            subjects[sub].incorrect++;
-                        }
-                    });
-                }
+})
 
-                let physicsAcc = subjects.Physics.attempt ? Math.round((subjects.Physics.correct / subjects.Physics.attempt) * 100) : 0;
-                let chemAcc = subjects.Chemistry.attempt ? Math.round((subjects.Chemistry.correct / subjects.Chemistry.attempt) * 100) : 0;
-                let mathsAcc = subjects.Maths.attempt ? Math.round((subjects.Maths.correct / subjects.Maths.attempt) * 100) : 0;
 
-                let html = `
-                <div class="section">  
-                    <h2>Subject Analysis</h2>    
-                    <table>    
-                        <tr><th>Subject</th><th>Attempted</th><th>Correct</th><th>Incorrect</th><th>Accuracy</th></tr>    
-                        <tr><td>Physics</td><td>${subjects.Physics.attempt}</td><td>${subjects.Physics.correct}</td><td>${subjects.Physics.incorrect}</td><td>${physicsAcc}%</td></tr>    
-                        <tr><td>Chemistry</td><td>${subjects.Chemistry.attempt}</td><td>${subjects.Chemistry.correct}</td><td>${subjects.Chemistry.incorrect}</td><td>${chemAcc}%</td></tr>    
-                        <tr><td>Maths</td><td>${subjects.Maths.attempt}</td><td>${subjects.Maths.correct}</td><td>${subjects.Maths.incorrect}</td><td>${mathsAcc}%</td></tr>
-                    </table>    
-                    <br>    
-                    <canvas id="subjectChart"></canvas>
-                </div>`;
-                document.getElementById("subjectAnalysis").innerHTML = html;
 
-                new Chart(document.getElementById("subjectChart"), {
-                    type: "bar",
-                    data: {
-                        labels: ["Physics", "Chemistry", "Maths"],
-                        datasets: [{
-                            label: "Correct Answers",
-                            backgroundColor: '#4CAF50',
-                            data: [subjects.Physics.correct, subjects.Chemistry.correct, subjects.Maths.correct]
-                        }]
-                    }
-                });
-            }
+function runAI(data){
 
-            /* ===========================
-               PART 3 — ACCURACY ANALYTICS
-            =========================== */
-            function generateAccuracyGraph(data) {
-                let correct = data.correct || 0;
-                let incorrect = data.incorrect || 0;
-                let attempted = data.attempted || 0;
-                let total = data.responses ? data.responses.length : 0;
-                let unattempted = total - attempted;
-                let accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
+const responses=data.responses||[]
 
-                let html = `
-                <div class="section">  
-                    <h2>Accuracy Analysis</h2>    
-                    <table>    
-                        <tr><th>Total Questions</th><th>Attempted</th><th>Correct</th><th>Incorrect</th><th>Unattempted</th><th>Accuracy</th></tr>    
-                        <tr><td>${total}</td><td>${attempted}</td><td>${correct}</td><td>${incorrect}</td><td>${unattempted}</td><td>${accuracy}%</td></tr>
-                    </table>    
-                    <br>    
-                    <canvas id="accuracyPie"></canvas>
-                </div>`;
-                document.getElementById("accuracyGraph").innerHTML = html;
+let correct=0
+let incorrect=0
+let attempted=0
+let totalTime=0
 
-                new Chart(document.getElementById("accuracyPie"), {
-                    type: "pie",
-                    data: {
-                        labels: ["Correct", "Incorrect", "Unattempted"],
-                        datasets: [{
-                            data: [correct, incorrect, unattempted],
-                            backgroundColor: ['#4CAF50', '#F44336', '#9E9E9E']
-                        }]
-                    },
-                    options: { maintainAspectRatio: false }
-                });
-            }
+let subject={}
+let topic={}
+let difficulty={}
 
-            /* ===========================
-               PART 4 — DIFFICULTY ANALYSIS
-            =========================== */
-            function generateDifficultyAnalysis(data) {
-                let difficulty = {
-                    Easy: { total: 0, correct: 0 },
-                    Moderate: { total: 0, correct: 0 },
-                    Hard: { total: 0, correct: 0 }
-                };
+let behavior={
+confident:0,
+slow:0,
+guessWrong:0,
+guessCorrect:0
+}
 
-                if (data.responses) {
-                    data.responses.forEach(r => {
-                        if (!r) return;
-                        let d = r.difficulty || "Easy";
-                        if (!difficulty[d]) d = "Easy"; // Safety fallback
-                        difficulty[d].total++;
-                        if (r.selected == r.correct) {
-                            difficulty[d].correct++;
-                        }
-                    });
-                }
+let smartAttempts=0
 
-                let easyAcc = difficulty.Easy.total ? Math.round((difficulty.Easy.correct / difficulty.Easy.total) * 100) : 0;
-                let modAcc = difficulty.Moderate.total ? Math.round((difficulty.Moderate.correct / difficulty.Moderate.total) * 100) : 0;
-                let hardAcc = difficulty.Hard.total ? Math.round((difficulty.Hard.correct / difficulty.Hard.total) * 100) : 0;
+responses.forEach((r,i)=>{
 
-                let html = `
-                <div class="section">  
-                    <h2>Difficulty Analysis</h2>    
-                    <table>    
-                        <tr><th>Difficulty</th><th>Total Questions</th><th>Correct</th><th>Accuracy</th></tr>    
-                        <tr><td>Easy</td><td>${difficulty.Easy.total}</td><td>${difficulty.Easy.correct}</td><td>${easyAcc}%</td></tr>    
-                        <tr><td>Moderate</td><td>${difficulty.Moderate.total}</td><td>${difficulty.Moderate.correct}</td><td>${modAcc}%</td></tr>    
-                        <tr><td>Hard</td><td>${difficulty.Hard.total}</td><td>${difficulty.Hard.correct}</td><td>${hardAcc}%</td></tr>
-                    </table>    
-                    <br>    
-                    <canvas id="difficultyChart"></canvas>
-                </div>`;
-                document.getElementById("difficultyAnalysis").innerHTML = html;
+if(!r) return
 
-                new Chart(document.getElementById("difficultyChart"), {
-                    type: "bar",
-                    data: {
-                        labels: ["Easy", "Moderate", "Hard"],
-                        datasets: [{
-                            label: "Correct Questions",
-                            backgroundColor: '#2196F3',
-                            data: [difficulty.Easy.correct, difficulty.Moderate.correct, difficulty.Hard.correct]
-                        }]
-                    }
-                });
-            }
+attempted++
 
-            /* ===========================
-               PART 5 — TIME PER QUESTION
-            =========================== */
-            function generateTimePerQuestion(data) {
-                let timeData = [];
-                let labels = [];
-                let totalTime = 0;
-                let count = 0;
+let isCorrect=r.selected===r.correct
+let time=r.time||0
 
-                if (data.responses) {
-                    data.responses.forEach((r, i) => {
-                        if (!r) return;
-                        let t = r.time || 0;
-                        timeData.push(t);
-                        labels.push("Q" + (i + 1));
-                        totalTime += t;
-                        count++;
-                    });
-                }
+totalTime+=time
 
-                let avgTime = count ? Math.round(totalTime / count) : 0;
+if(isCorrect) correct++
+else incorrect++
 
-                let html = `
-                <div class="section">  
-                    <h2>Time Per Question</h2>    
-                    <div class="card">Average Time<div class="big">${avgTime}s</div></div>    
-                    <br>    
-                    <canvas id="timeChart"></canvas>
-                </div>`;
-                document.getElementById("timePerQuestion").innerHTML = html;
 
-                new Chart(document.getElementById("timeChart"), {
-                    type: "line",
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: "Time (seconds)",
-                            borderColor: '#FF9800',
-                            data: timeData,
-                            fill: false
-                        }]
-                    }
-                });
-            }
+/* SUBJECT */
 
-            /* ===========================
-               PART 6 — TIMELINE ANALYSIS
-            =========================== */
-            function generateTimeline(data) {
-                let blocks = [0, 0, 0, 0, 0, 0];
+if(!subject[r.subject])
+subject[r.subject]={correct:0,incorrect:0}
 
-                if (data.responses && data.responses.length > 0) {
-                    let total = data.responses.length;
-                    data.responses.forEach((r, i) => {
-                        if (!r) return;
-                        let block = Math.floor(i / (total / 6));
-                        if (block < 6) {
-                            blocks[block]++;
-                        } else if (block === 6) {
-                            blocks[5]++; // Edge case if math floor hits exactly 6
-                        }
-                    });
-                }
+if(isCorrect)
+subject[r.subject].correct++
+else
+subject[r.subject].incorrect++
 
-                let html = `
-                <div class="section">  
-                    <h2>Timeline Analysis</h2>    
-                    <canvas id="timelineChart"></canvas>
-                </div>`;
-                document.getElementById("timelineAnalysis").innerHTML = html;
 
-                new Chart(document.getElementById("timelineChart"), {
-                    type: "bar",
-                    data: {
-                        labels: ["0-30 min", "30-60 min", "60-90 min", "90-120 min", "120-150 min", "150-180 min"],
-                        datasets: [{
-                            label: "Questions Attempted",
-                            backgroundColor: '#9C27B0',
-                            data: blocks
-                        }]
-                    }
-                });
-            }
+/* TOPIC */
 
-            /* ===========================
-               PART 7 — ATTEMPT QUALITY
-            =========================== */
-            function generateAttemptQuality(data) {
-                let perfect = 0;
-                let overtime = 0;
-                let confused = 0;
+if(!topic[r.topic])
+topic[r.topic]={correct:0,incorrect:0}
 
-                if (data.responses) {
-                    data.responses.forEach(r => {
-                        if (!r) return;
-                        if (r.selected == r.correct && r.time < 90) {
-                            perfect++;
-                        } else if (r.time > 120) {
-                            overtime++;
-                        } else {
-                            confused++;
-                        }
-                    });
-                }
+if(isCorrect)
+topic[r.topic].correct++
+else
+topic[r.topic].incorrect++
 
-                let html = `
-                <div class="section">  
-                    <h2>Attempt Quality</h2>    
-                    <canvas id="attemptChart"></canvas>
-                </div>`;
-                document.getElementById("attemptQuality").innerHTML = html;
 
-                new Chart(document.getElementById("attemptChart"), {
-                    type: "pie",
-                    data: {
-                        labels: ["Perfect Attempt", "Overtime Attempt", "Confused Attempt"],
-                        datasets: [{
-                            data: [perfect, overtime, confused],
-                            backgroundColor: ['#4CAF50', '#FF9800', '#F44336']
-                        }]
-                    },
-                    options: { maintainAspectRatio: false }
-                });
-            }
+/* DIFFICULTY */
 
-            /* ===========================
-               PART 8 — PAINFUL QUESTIONS
-            =========================== */
-            function generatePainfulQuestions(data) {
-                let painful = [];
-                if (data.responses) {
-                    data.responses.forEach((r, i) => {
-                        if (!r) return;
-                        if (r.time > 120 && r.selected != r.correct) {
-                            painful.push(i + 1);
-                        }
-                    });
-                }
-                let list = painful.length ? painful.join(", ") : "None";
-                let html = `
-                <div class="section">  
-                    <h2>Painful Questions</h2>    
-                    <p>Questions where you spent too much time but answered incorrectly.</p>    
-                    <div class="card">${list}</div>  
-                </div>`;
-                document.getElementById("painfulQuestions").innerHTML = html;
-            }
+if(!difficulty[r.difficulty])
+difficulty[r.difficulty]={correct:0,incorrect:0}
 
-            /* ===========================
-               PART 9 — MISSED CONCEPTS
-            =========================== */
-            function generateMissedConcepts(data) {
-                let topics = {};
-                if (data.responses) {
-                    data.responses.forEach(r => {
-                        if (!r) return;
-                        if (r.selected != r.correct) {
-                            let t = r.topic || "Unknown";
-                            if (!topics[t]) topics[t] = 0;
-                            topics[t]++;
-                        }
-                    });
-                }
-                let html = `
-                <div class="section">  
-                    <h2>Missed Concepts</h2>    
-                    <table>    
-                        <tr><th>Topic</th><th>Mistakes</th></tr>`;
-                Object.keys(topics).forEach(t => {
-                    html += `<tr><td>${t}</td><td>${topics[t]}</td></tr>`;
-                });
-                html += `</table></div>`;
-                document.getE
+if(isCorrect)
+difficulty[r.difficulty].correct++
+else
+difficulty[r.difficulty].incorrect++
+
+
+/* BEHAVIOR AI */
+
+if(isCorrect && time<60){
+
+behavior.confident++
+smartAttempts++
+
+}
+
+if(isCorrect && time>120){
+
+behavior.slow++
+
+}
+
+if(!isCorrect && time<20){
+
+behavior.guessWrong++
+
+}
+
+if(isCorrect && time<20){
+
+behavior.guessCorrect++
+
+}
+
+})
+
+
+/* BASIC METRICS */
+
+let score=correct*4-incorrect
+let accuracy=Math.round((correct/attempted)*100)
+let avgTime=Math.round(totalTime/attempted)
+
+
+/* SPEED SCORE */
+
+let expectedTime=90
+let efficiency=Math.round((expectedTime/avgTime)*100)
+
+
+/* PERCENTILE MODEL */
+
+let percentile=Math.min(99.9,(score/300)*100)
+
+
+/* AIR SIMULATION */
+
+let rank=Math.round((100-percentile)*15000)
+
+
+/* CONCEPT MASTERY */
+
+let weak=[]
+let strong=[]
+
+Object.keys(topic).forEach(t=>{
+
+let c=topic[t].correct
+let ic=topic[t].incorrect
+
+let mastery=(c/(c+ic))*100
+
+if(mastery<40) weak.push(t)
+if(mastery>70) strong.push(t)
+
+})
+
+
+/* OVERVIEW */
+
+document.getElementById("overview").innerHTML=`
+
+<div class="section">
+
+<h2>Overview</h2>
+
+<div class="grid">
+
+<div class="card">Score<div class="big">${score}</div></div>
+
+<div class="card">Accuracy<div class="big">${accuracy}%</div></div>
+
+<div class="card">Avg Time<div class="big">${avgTime}s</div></div>
+
+<div class="card">Efficiency<div class="big">${efficiency}%</div></div>
+
+</div>
+
+</div>
+`
+
+
+
+/* RANK PREDICTOR */
+
+document.getElementById("rank").innerHTML=`
+
+<div class="section">
+
+<h2>Rank Prediction</h2>
+
+<div class="grid">
+
+<div class="card">
+
+Percentile
+
+<div class="big">${percentile.toFixed(2)}</div>
+
+</div>
+
+<div class="card">
+
+Predicted AIR
+
+<div class="big">${rank}</div>
+
+</div>
+
+</div>
+
+</div>
+`
+
+
+
+/* SUBJECT CHART */
+
+document.getElementById("subject").innerHTML=`
+
+<div class="section">
+
+<h2>Subject Analysis</h2>
+
+<canvas id="subjectChart"></canvas>
+
+</div>
+`
+
+new Chart(
+
+document.getElementById("subjectChart"),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:Object.keys(subject),
+
+datasets:[{
+
+label:"Correct",
+
+data:Object.values(subject).map(s=>s.correct)
+
+}]
+
+}
+
+})
+
+
+
+/* DIFFICULTY */
+
+document.getElementById("difficulty").innerHTML=`
+
+<div class="section">
+
+<h2>Difficulty Performance</h2>
+
+<canvas id="diffChart"></canvas>
+
+</div>
+`
+
+new Chart(
+
+document.getElementById("diffChart"),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:Object.keys(difficulty),
+
+datasets:[{
+
+label:"Correct",
+
+data:Object.values(difficulty).map(s=>s.correct)
+
+}]
+
+}
+
+})
+
+
+
+/* BEHAVIOR AI */
+
+document.getElementById("behavior").innerHTML=`
+
+<div class="section">
+
+<h2>Behavior AI</h2>
+
+<canvas id="behaviorChart"></canvas>
+
+</div>
+`
+
+new Chart(
+
+document.getElementById("behaviorChart"),
+
+{
+
+type:"pie",
+
+data:{
+
+labels:[
+"Confident Correct",
+"Slow Correct",
+"Guess Correct",
+"Guess Wrong"
+],
+
+datasets:[{
+
+data:[
+behavior.confident,
+behavior.slow,
+behavior.guessCorrect,
+behavior.guessWrong
+]
+
+}]
+
+}
+
+})
+
+
+
+/* RADAR */
+
+document.getElementById("radar").innerHTML=`
+
+<div class="section">
+
+<h2>Performance Radar</h2>
+
+<canvas id="radarChart"></canvas>
+
+</div>
+`
+
+new Chart(
+
+document.getElementById("radarChart"),
+
+{
+
+type:"radar",
+
+data:{
+
+labels:[
+"Accuracy",
+"Speed",
+"Concept",
+"Smart Attempts"
+],
+
+datasets:[{
+
+data:[
+accuracy,
+efficiency,
+strong.length*10,
+smartAttempts*5
+]
+
+}]
+
+}
+
+})
+
+
+
+/* HEATMAP */
+
+let heatHTML=""
+
+responses.forEach((r,i)=>{
+
+let color="#ccc"
+
+if(r){
+
+if(r.selected===r.correct)
+color="#4CAF50"
+else
+color="#F44336"
+
+}
+
+heatHTML+=`<div class="box" style="background:${color}">${i+1}</div>`
+
+})
+
+document.getElementById("heatmap").innerHTML=`
+
+<div class="section">
+
+<h2>Question Heatmap</h2>
+
+<div class="heat">
+
+${heatHTML}
+
+</div>
+
+</div>
+`
+
+
+
+/* CONCEPT ANALYSIS */
+
+document.getElementById("concept").innerHTML=`
+
+<div class="section">
+
+<h2>Concept Mastery</h2>
+
+<b>Strong Topics</b>
+
+<ul>
+
+${strong.map(t=>`<li>${t}</li>`).join("")}
+
+</ul>
+
+<b>Weak Topics</b>
+
+<ul>
+
+${weak.map(t=>`<li>${t}</li>`).join("")}
+
+</ul>
+
+</div>
+`
+
+
+
+/* SPEED VS ACCURACY OPTIMIZER */
+
+let suggestion=""
+
+if(avgTime>110)
+suggestion="You are spending too much time. Improve speed."
+
+if(accuracy<60)
+suggestion="Focus on concept clarity to improve accuracy."
+
+document.getElementById("optimizer").innerHTML=`
+
+<div class="section">
+
+<h2>AI Strategy Optimizer</h2>
+
+<p>${suggestion}</p>
+
+</div>
+`
+
+
+
+/* AI STUDY PLAN */
+
+let studyPlan=""
+
+weak.forEach(t=>{
+
+studyPlan+=`<li>Revise concept: <b>${t}</b></li>`
+
+})
+
+document.getElementById("study").innerHTML=`
+
+<div class="section">
+
+<h2>AI Study Plan</h2>
+
+<ul>
+
+${studyPlan}
+
+</ul>
+
+</div>
+`
+
+}
+
+</script>
+
+</body>
+
+</html>
