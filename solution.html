@@ -1,86 +1,412 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-<title>Cayley Hamilton Proof</title><style>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Special Surprise</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins;
+}
 
 body{
-font-family:Arial;
-background:#f4f6fb;
-padding:40px;
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(120deg,#0f2027,#203a43,#2c5364);
+color:white;
+text-align:center;
+}
+
+/* galaxy stars */
+
+.star{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+from{opacity:0.2}
+to{opacity:1}
+}
+
+/* container */
+
+.container{
+z-index:10;
+max-width:700px;
+padding:20px;
+}
+
+/* glowing text */
+
+h1{
+font-size:45px;
+animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+from{ text-shadow:0 0 10px white }
+to{ text-shadow:0 0 40px pink }
+}
+
+.typing{
+font-size:22px;
+height:40px;
+}
+
+/* button */
+
+button{
+margin-top:30px;
+padding:15px 35px;
+border:none;
+border-radius:40px;
+background:white;
+color:#ff4e8d;
+font-size:18px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.1);
+}
+
+/* beating heart */
+
+.bigheart{
+
+position:absolute;
+font-size:120px;
+animation:beat 1s infinite;
+
+}
+
+@keyframes beat{
+
+0%{transform:scale(1)}
+50%{transform:scale(1.3)}
+100%{transform:scale(1)}
+
+}
+
+/* hearts */
+
+.heart{
+position:absolute;
+font-size:20px;
+animation:float 6s infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0)}
+100%{transform:translateY(-1000px)}
+}
+
+/* roses */
+
+.rose{
+position:absolute;
+font-size:25px;
+animation:fall 6s linear infinite;
+}
+
+@keyframes fall{
+0%{transform:translateY(-100px)}
+100%{transform:translateY(100vh)}
+}
+
+/* confetti */
+
+.confetti{
+position:absolute;
+width:10px;
+height:10px;
+animation:fall2 4s linear infinite;
+}
+
+@keyframes fall2{
+0%{transform:translateY(-100vh) rotate(0)}
+100%{transform:translateY(100vh) rotate(720deg)}
+}
+
+/* slideshow */
+
+.slideshow{
+margin-top:30px;
+width:300px;
+height:300px;
+border-radius:20px;
+overflow:hidden;
+margin-left:auto;
+margin-right:auto;
+}
+
+.slideshow img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+/* envelope */
+
+.envelope{
+
+margin-top:30px;
+
+font-size:40px;
+
+cursor:pointer;
+
+animation:beat 2s infinite;
+
+}
+
+.message{
+margin-top:20px;
+font-size:24px;
 line-height:1.6;
 }
 
-.container{
-background:white;
-padding:40px;
-border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-max-width:900px;
-margin:auto;
+.hidden{
+display:none;
 }
 
-h1{
-text-align:center;
-color:#2c3e50;
-}
+</style>
 
-.step{
-margin-top:25px;
-padding:20px;
-background:#f9fbff;
-border-left:5px solid #3b82f6;
-border-radius:6px;
-}
+</head>
 
-.matrix{
-font-family:monospace;
-font-size:18px;
-margin-top:10px;
-}
+<body>
 
-.result{
-background:#e8f7ec;
-padding:20px;
-margin-top:30px;
-border-left:6px solid #22c55e;
-font-weight:bold;
-}
+<div class="bigheart">❤️</div>
 
-</style></head><body><div class="container"><h1>Cayley-Hamilton Theorem Proof</h1><div class="step">
-<b>Given Matrix</b><div class="matrix">
-A =
-| 1  1  1 | <br>
-| 1  2 -3 | <br>
-| 2 -1  3 |
-</div>
-</div><div class="step">
-<b>Step 1: Form Characteristic Matrix</b><div class="matrix">
-A - λI =
-| 1-λ   1     1 | <br>
-| 1   2-λ   -3 | <br>
-| 2   -1   3-λ |
-</div></div><div class="step">
-<b>Step 2: Find Determinant</b>|A - λI| = 0
+<div class="container">
+
+<h1 id="name">Hello bhootni chudail 😊</h1>
+
+<div id="typing" class="typing"></div>
+
+<button onclick="openSurprise()">Open Surprise 🎁</button>
+
+<div id="surprise" class="hidden">
+
+<div class="envelope" onclick="openLetter()">💌</div>
+
+<div id="letter" class="message hidden">
+
+✨ You are really special ✨
+
 <br><br>
 
-(1-λ)[(2-λ)(3-λ) - (-3)(-1)]
-<br>
+Your smile can brighten someone's whole day 💖
 
-- 1[1(3-λ) - (-3)(2)]
-  <br>
+<br><br>
 
-+ 1[1(-1) - (2-λ)2]
+Stay happy always 😊
 
-</div><div class="step">
-<b>Step 3: Solve Determinant</b>Characteristic Equation becomes
+</div>
 
-<div class="matrix">
-λ³ - 6λ² + 5λ + 11 = 0
-</div></div><div class="step">
-<b>Step 4: Apply Cayley-Hamilton Theorem</b>Replace λ with matrix A
+<div class="slideshow">
 
-<div class="matrix">
-A³ - 6A² + 5A + 11I = 0
-</div></div><div class="result">
-Hence Proved that the matrix satisfies its characteristic equation.
-</div></div></body>
+<img id="slide" src="https://picsum.photos/400?1">
+
+</div>
+
+</div>
+
+</div>
+
+<audio id="music" loop>
+
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1b5d8a7d66.mp3">
+
+</audio>
+
+<script>
+
+/* create stars */
+
+for(let i=0;i<120;i++){
+
+const star=document.createElement("div");
+
+star.className="star";
+
+star.style.left=Math.random()*100+"vw";
+
+star.style.top=Math.random()*100+"vh";
+
+document.body.appendChild(star);
+
+}
+
+/* typing */
+
+const text="I made this surprise just for you...";
+
+let i=0;
+
+function typing(){
+
+if(i<text.length){
+
+document.getElementById("typing").innerHTML+=text.charAt(i);
+
+i++;
+
+setTimeout(typing,50);
+
+}
+
+}
+
+typing();
+
+/* open surprise */
+
+function openSurprise(){
+
+document.getElementById("surprise").classList.remove("hidden");
+
+document.getElementById("music").play();
+
+confetti();
+
+}
+
+/* open letter */
+
+function openLetter(){
+
+document.getElementById("letter").classList.remove("hidden");
+
+}
+
+/* floating hearts */
+
+function heart(){
+
+const h=document.createElement("div");
+
+h.className="heart";
+
+h.innerHTML="❤️";
+
+h.style.left=Math.random()*100+"vw";
+
+document.body.appendChild(h);
+
+setTimeout(()=>h.remove(),6000);
+
+}
+
+setInterval(heart,400);
+
+/* roses */
+
+function rose(){
+
+const r=document.createElement("div");
+
+r.className="rose";
+
+r.innerHTML="🌹";
+
+r.style.left=Math.random()*100+"vw";
+
+document.body.appendChild(r);
+
+setTimeout(()=>r.remove(),6000);
+
+}
+
+setInterval(rose,1500);
+
+/* confetti */
+
+function confetti(){
+
+for(let i=0;i<150;i++){
+
+const c=document.createElement("div");
+
+c.className="confetti";
+
+c.style.left=Math.random()*100+"vw";
+
+c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+
+document.body.appendChild(c);
+
+}
+
+}
+
+/* slideshow */
+
+const images=[
+
+"https://picsum.photos/400?1",
+
+"https://picsum.photos/400?2",
+
+"https://picsum.photos/400?3",
+
+"https://picsum.photos/400?4"
+
+];
+
+let s=0;
+
+setInterval(()=>{
+
+s++;
+
+if(s>=images.length)s=0;
+
+document.getElementById("slide").src=images[s];
+
+},3000);
+
+/* fireworks click */
+
+document.addEventListener("click",function(e){
+
+for(let i=0;i<20;i++){
+
+const c=document.createElement("div");
+
+c.className="confetti";
+
+c.style.left=e.clientX+"px";
+
+c.style.top=e.clientY+"px";
+
+c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+
+document.body.appendChild(c);
+
+}
+
+});
+
+</script>
+
+</body>
 </html>
